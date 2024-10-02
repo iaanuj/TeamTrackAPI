@@ -29,8 +29,8 @@ TeamTrack is a collaborative to-do list API built with Java Spring Boot and Mong
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/TeamTrack.git
-cd TeamTrack
+git clone https://github.com/iaanuj/TeamTrackAPI.git
+cd TeamTrackAPI
 ```
 
 ### Configure MongoDB
