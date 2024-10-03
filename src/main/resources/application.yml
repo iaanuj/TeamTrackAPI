@@ -1,0 +1,12 @@
+spring:
+  data:
+    mongodb:
+      uri: ${MONGODB_URI}
+      database: teamtrackdb
+      auto-index-creation: true
+
+
+jwt:
+  secret:
+    api:
+      key: ${JWT_SECRET_KEY}
