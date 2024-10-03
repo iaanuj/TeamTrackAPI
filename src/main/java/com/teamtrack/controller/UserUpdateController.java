@@ -1,7 +1,7 @@
-package net.engineeringdigest.journalApp.controller;
+package com.teamtrack.controller;
 
-import net.engineeringdigest.journalApp.entity.User;
-import net.engineeringdigest.journalApp.service.UserService;
+import com.teamtrack.entity.User;
+import com.teamtrack.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

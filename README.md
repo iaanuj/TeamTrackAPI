@@ -64,4 +64,4 @@ Run the main `TeamTrack.java` file to start the project.
 |POST|`api/auth/sign-in`|Create a New User|
 |GET|`/health-check`|check if app is working|
 |PUT|`users/update`|Update user credentials|
-|GET|`admin/all-users`|Retrive all users who are admin
+|GET|`admin/all-users`|Retrieve all users who are admin

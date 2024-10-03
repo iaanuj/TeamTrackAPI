@@ -1,6 +1,6 @@
-package net.engineeringdigest.journalApp.repository;
+package com.teamtrack.repository;
 
-import net.engineeringdigest.journalApp.entity.User;
+import com.teamtrack.entity.User;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 

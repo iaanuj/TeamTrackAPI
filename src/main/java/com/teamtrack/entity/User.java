@@ -1,4 +1,4 @@
-package net.engineeringdigest.journalApp.entity;
+package com.teamtrack.entity;
 
 
 

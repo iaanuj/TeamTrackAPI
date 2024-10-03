@@ -1,4 +1,4 @@
-    package net.engineeringdigest.journalApp;
+    package com.teamtrack;
 
 
     import org.springframework.boot.SpringApplication;
@@ -8,7 +8,6 @@
     import org.springframework.data.mongodb.MongoTransactionManager;
     import org.springframework.transaction.PlatformTransactionManager;
     import org.springframework.transaction.annotation.EnableTransactionManagement;
-    import org.springframework.transaction.annotation.Transactional;
 
     @EnableTransactionManagement
     @SpringBootApplication

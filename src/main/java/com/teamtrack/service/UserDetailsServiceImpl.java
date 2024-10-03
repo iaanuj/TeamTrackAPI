@@ -1,14 +1,15 @@
-package net.engineeringdigest.journalApp.service;
+package com.teamtrack.service;
 
-import net.engineeringdigest.journalApp.entity.User;
-import net.engineeringdigest.journalApp.repository.UserRepository;
+import com.teamtrack.entity.User;
+import com.teamtrack.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     UserRepository userRepository;

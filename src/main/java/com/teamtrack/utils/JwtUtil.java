@@ -1,4 +1,4 @@
-package net.engineeringdigest.journalApp.utils;
+package com.teamtrack.utils;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -12,8 +12,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static javax.crypto.Cipher.SECRET_KEY;
-
 @Component
 public class JwtUtil {
     @Value("${jwt.secret.api.key}")
@@ -26,7 +24,6 @@ public class JwtUtil {
     public void init() {
         SECRET_KEY = secretKeyValue;
     }
-
 
 
     private SecretKey getSigningKey() {

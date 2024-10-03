@@ -1,6 +1,6 @@
-package net.engineeringdigest.journalApp.filter;
+package com.teamtrack.filter;
 
-import net.engineeringdigest.journalApp.utils.JwtUtil;
+import com.teamtrack.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
