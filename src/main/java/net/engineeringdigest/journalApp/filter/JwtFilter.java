@@ -1,4 +1,4 @@
-package net.engineeringdigest.journalApp.config.filter;
+package net.engineeringdigest.journalApp.filter;
 
 import net.engineeringdigest.journalApp.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;

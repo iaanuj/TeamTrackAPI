@@ -1,6 +1,6 @@
 package net.engineeringdigest.journalApp.config;
 
-import net.engineeringdigest.journalApp.config.filter.JwtFilter;
+import net.engineeringdigest.journalApp.filter.JwtFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
