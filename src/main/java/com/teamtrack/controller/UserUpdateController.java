@@ -25,7 +25,7 @@ public class UserUpdateController {
     @Autowired
     private UserService userService;
 
-    @PutMapping("/update")
+    @PutMapping("/update-username")
     public ResponseEntity<?> updateUserName(@Valid @RequestBody UserNameUpdateRequest userNameUpdateRequest) throws UsernameAlreadyExistsException {
 
 

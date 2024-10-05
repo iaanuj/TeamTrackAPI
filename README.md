@@ -38,11 +38,11 @@ cd TeamTrackAPI
 1. **(Option 1)By Editing the application.yml[Not Recomanded]:**
 
     you can enter your mongodb URI directly inside the application.yml file
-    by replacing the variables.
+    by replacing the variable.
 
-2. **(Option 2)By Creating Envirnment Variables:**
+2. **(Option 2)By Creating Environment Variables:**
     
-    if you are using Intellij it provides an option to create envirnment variables for running the code.
+    if you are using Intellij it provides an option to create environment variables for running the code.
 
 **Variables in application.properties are defined as below:**
 
@@ -57,10 +57,10 @@ Run the main `TeamTrack.java` file to start the project.
 
 
 ## EndPoints
-|Method|Endpoint|Description|
-|-|-|-|
-|POST|`api/auth`|Authentication|
-|POST|`api/auth/sign-in`|Create a New User|
-|GET|`/health-check`|check if app is working|
-|PUT|`users/update`|Update user credentials|
-|GET|`admin/all-users`|For admins to retreive all users
+|Method| Endpoint               | Description                      |
+|-|------------------------|----------------------------------|
+|POST| `auth/sign-in`         | Create a New User                |
+|POST| `auth/log-in`          | log in via jwt                   |
+|GET| `health-check`         | check if app is working          |
+|PUT| `user/update-username` | Update user name                 |
+|GET| `admin/all-users`      | For admins to retreive all users |
