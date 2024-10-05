@@ -21,6 +21,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin(origins = "http://localhost:5173")
 @Slf4j
 public class AuthController {
 
@@ -54,16 +55,16 @@ public class AuthController {
     }
 
     @PostMapping("/log-in")
-    public ResponseEntity<?> login(@RequestBody LoginRequest user){
+    public ResponseEntity<ApiResponse> login(@RequestBody LoginRequest user){
         try{
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(user.getUserName(),user.getUserPassword()));
             UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(user.getUserName());
             String jwt = jwtUtil.generateToken(userDetails.getUsername());
-            return new ResponseEntity<>(jwt, HttpStatus.OK);
+            return new ResponseEntity<>(new ApiResponse(jwt), HttpStatus.OK);
         }catch (Exception e){
             log.error("Exception occurred while createAuthenticationToken ", e);
-            return new ResponseEntity<>("wrong username or password",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponse("wrong username or password"),HttpStatus.BAD_REQUEST);
         }
     }
 }

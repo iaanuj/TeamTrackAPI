@@ -1,5 +1,6 @@
 package com.teamtrack.controller;
 
+import com.teamtrack.dto.ApiResponse;
 import com.teamtrack.dto.UserNameUpdateRequest;
 import com.teamtrack.entity.User;
 import com.teamtrack.exception.UsernameAlreadyExistsException;
@@ -26,7 +27,7 @@ public class UserUpdateController {
     private UserService userService;
 
     @PutMapping("/update-username")
-    public ResponseEntity<?> updateUserName(@Valid @RequestBody UserNameUpdateRequest userNameUpdateRequest) throws UsernameAlreadyExistsException {
+    public ResponseEntity<ApiResponse> updateUserName(@Valid @RequestBody UserNameUpdateRequest userNameUpdateRequest) throws UsernameAlreadyExistsException {
 
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -40,6 +41,6 @@ public class UserUpdateController {
         }
         userInDb.setUserName(userNameUpdateRequest.getNewUserName());
         userService.saveUser(userInDb);
-        return new ResponseEntity<>("user name updated successfully",HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse("username updated successfully"),HttpStatus.OK);
     }
 }
