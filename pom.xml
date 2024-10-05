@@ -8,11 +8,11 @@
 		<version>2.7.16</version>
 		<relativePath/>
 	</parent>
-	<groupId>net.engineeringdigest</groupId>
+	<groupId>com.teamtrack</groupId>
 	<artifactId>Teamtrack</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Journal App</name>
-	<description>E2EE Journal App</description>
+	<name>Team Track</name>
+	<description>Team Track</description>
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
@@ -56,6 +56,16 @@
 			<artifactId>jjwt-impl</artifactId>
 			<version>0.12.5</version>
 			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>6.2.0.Final</version>  <!-- or the latest stable version -->
+		</dependency>
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>2.0.1.Final</version>
 		</dependency>
 	</dependencies>
 

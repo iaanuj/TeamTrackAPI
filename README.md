@@ -35,22 +35,21 @@ cd TeamTrackAPI
 
 ### Configure MongoDB
 
-1. **(Option 1)By Editing the application.properties[Not Recomanded]:**
+1. **(Option 1)By Editing the application.yml[Not Recomanded]:**
 
-    you can enter your mongodb directly inside the application.properties file
-    by replacing the varibles.
+    you can enter your mongodb URI directly inside the application.yml file
+    by replacing the variables.
 
 2. **(Option 2)By Creating Envirnment Variables:**
     
-    if you are using Intellij it provides an option to create envirnment variables for running th code.
+    if you are using Intellij it provides an option to create envirnment variables for running the code.
 
 **Variables in application.properties are defined as below:**
 
-|Variable|Value|
-|-|-|
-|MONODB_USERNAME|Your MongoDB username|
-|MONGODB_USERPASSWORD|Your MongoDB password|
-|JWT_SECRECT_KEY|A 120 bit or longer sized Secret Key|
+| Variable             | Value                                            |
+|----------------------|--------------------------------------------------|
+| MONODB_URI           | Your MongoDB URI link with username and password |
+| JWT_SECRECT_KEY      | At least 256-bits Secret Key for HMAC-SHA        |
 
 ### Build The Project
 
@@ -64,4 +63,4 @@ Run the main `TeamTrack.java` file to start the project.
 |POST|`api/auth/sign-in`|Create a New User|
 |GET|`/health-check`|check if app is working|
 |PUT|`users/update`|Update user credentials|
-|GET|`admin/all-users`|Retrieve all users who are admin
+|GET|`admin/all-users`|For admins to retreive all users

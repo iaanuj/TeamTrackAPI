@@ -1,5 +1,9 @@
 package com.teamtrack.controller;
 
+import com.teamtrack.dto.ApiResponse;
+import com.teamtrack.dto.LoginRequest;
+import com.teamtrack.exception.UsermailAlreadyExistsException;
+import com.teamtrack.exception.UsernameAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
 import com.teamtrack.entity.User;
 import com.teamtrack.service.UserDetailsServiceImpl;
@@ -13,9 +17,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "http://localhost:5173")
 @Slf4j
 public class AuthController {
 
@@ -32,19 +37,24 @@ public class AuthController {
     private JwtUtil jwtUtil;
 
     @PostMapping("/sign-up")
-    public ResponseEntity<?> signup(@RequestBody User user){
+    public ResponseEntity<ApiResponse> signup(@Valid @RequestBody User user){
         try {
             userService.registerUser(user);
-            // Return HTTP status 201 Created with a success message
-            return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully.");
-        } catch (Exception e) {
-            // Return HTTP status 500 Internal Server Error for any other errors
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred during registration.");
+            return new ResponseEntity<>(new ApiResponse("user registered successfully.",true),HttpStatus.CREATED);
+        }
+        catch (UsermailAlreadyExistsException e){
+            return new ResponseEntity<>(new ApiResponse(e.getMessage(),false),HttpStatus.CONFLICT);
+        }
+        catch (UsernameAlreadyExistsException e){
+            return new ResponseEntity<>(new ApiResponse(e.getMessage(),false),HttpStatus.CONFLICT);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(new ApiResponse("An error occurred during registration.",false),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping("/log-in")
-    public ResponseEntity<?> login(@RequestBody User user){
+    public ResponseEntity<?> login(@RequestBody LoginRequest user){
         try{
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(user.getUserName(),user.getUserPassword()));
@@ -55,6 +65,5 @@ public class AuthController {
             log.error("Exception occurred while createAuthenticationToken ", e);
             return new ResponseEntity<>("wrong username or password",HttpStatus.BAD_REQUEST);
         }
-
     }
 }
