@@ -46,10 +46,11 @@ cd TeamTrackAPI
 
 **Variables in application.properties are defined as below:**
 
-| Variable             | Value                                            |
-|----------------------|--------------------------------------------------|
-| MONODB_URI           | Your MongoDB URI link with username and password |
-| JWT_SECRECT_KEY      | At least 256-bits Secret Key for HMAC-SHA        |
+| Variable        | Value                                                    |
+|-----------------|----------------------------------------------------------|
+| MONODB_URI      | Your MongoDB URI link with username and password         |
+| JWT_SECRECT_KEY | At least 256-bits Secret Key for HMAC-SHA                |
+| FRONTEND_URL    | Frontend URL to connect with backend using @CrossOrigin |
 
 ### Build The Project
 
