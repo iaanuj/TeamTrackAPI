@@ -35,7 +35,7 @@ cd TeamTrackAPI
 
 ### Configure MongoDB
 
-1. **(Option 1)By Editing the application.yml[Not Recomanded]:**
+1. **(Option 1)By Editing the application.yml[Not Recommended]:**
 
     you can enter your mongodb URI directly inside the application.yml file
     by replacing the variable.
@@ -46,11 +46,15 @@ cd TeamTrackAPI
 
 **Variables in application.properties are defined as below:**
 
-| Variable        | Value                                                    |
-|-----------------|----------------------------------------------------------|
-| MONODB_URI      | Your MongoDB URI link with username and password         |
-| JWT_SECRECT_KEY | At least 256-bits Secret Key for HMAC-SHA                |
+| Variable        | Value                                                   |
+|-----------------|---------------------------------------------------------|
+| MONODB_URI      | Your MongoDB URI link with username and password        |
+| JWT_SECRECT_KEY | At least 256-bits Secret Key for HMAC-SHA               |
 | FRONTEND_URL    | Frontend URL to connect with backend using @CrossOrigin |
+| MAIL_USERNAME   | Your mail username                                      |
+| MAIL_PASSWORD   | Your generated app-specific password.                   |
+
+
 
 ### Build The Project
 
@@ -58,10 +62,11 @@ Run the main `TeamTrack.java` file to start the project.
 
 
 ## EndPoints
-|Method| Endpoint               | Description                      |
-|-|------------------------|----------------------------------|
-|POST| `auth/sign-in`         | Create a New User                |
-|POST| `auth/log-in`          | log in via jwt                   |
-|GET| `health-check`         | check if app is working          |
-|PUT| `user/update-username` | Update user name                 |
-|GET| `admin/all-users`      | For admins to retreive all users |
+| Method | Endpoint                   | Description                                    |
+|--------|----------------------------|------------------------------------------------|
+| POST   | `auth/sign-in`             | Create a New User and sends confirmation code. |
+| POST   | `auth/log-in`              | log in via jwt                                 |
+| POST   | `auth/verify-confirmation` | for verifying user                             |
+| GET    | `health-check`             | check if app is working                        |
+| PUT    | `user/update-username`     | Update user name                               |
+| GET    | `admin/all-users`          | For admins to retrieve all users               |
