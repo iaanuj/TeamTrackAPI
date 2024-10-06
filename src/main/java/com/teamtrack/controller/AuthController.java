@@ -1,6 +1,7 @@
 package com.teamtrack.controller;
 
 import com.teamtrack.dto.ApiResponse;
+import com.teamtrack.dto.ConfirmationRequest;
 import com.teamtrack.dto.LoginRequest;
 import com.teamtrack.exception.UsermailAlreadyExistsException;
 import com.teamtrack.exception.UsernameAlreadyExistsException;
@@ -41,7 +42,7 @@ public class AuthController {
     public ResponseEntity<ApiResponse> signup(@Valid @RequestBody User user){
         try {
             userService.registerUser(user);
-            return new ResponseEntity<>(new ApiResponse("user registered successfully.",true),HttpStatus.CREATED);
+            return new ResponseEntity<>(new ApiResponse("User registered successfully. Please check your email for the confirmation code.",true),HttpStatus.CREATED);
         }
         catch (UsermailAlreadyExistsException e){
             return new ResponseEntity<>(new ApiResponse(e.getMessage(),false),HttpStatus.CONFLICT);
@@ -60,11 +61,38 @@ public class AuthController {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(user.getUserName(),user.getUserPassword()));
             UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(user.getUserName());
+
+            User currentUser = userService.findByUserName(user.getUserName());
+            if(!currentUser.isActive()){
+                return new ResponseEntity<>(new ApiResponse("Account is not verified.",false),HttpStatus.UNAUTHORIZED);
+            }
+
             String jwt = jwtUtil.generateToken(userDetails.getUsername());
-            return new ResponseEntity<>(new ApiResponse(jwt), HttpStatus.OK);
+            return new ResponseEntity<>(new ApiResponse(jwt,true), HttpStatus.OK);
         }catch (Exception e){
             log.error("Exception occurred while createAuthenticationToken ", e);
-            return new ResponseEntity<>(new ApiResponse("wrong username or password"),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponse("wrong username or password",false),HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/verify-confirmation")
+    public ResponseEntity<ApiResponse> verifyConfirmationCode(@RequestBody ConfirmationRequest confirmationRequest){
+        try{
+            User user = userService.findByUserMail(confirmationRequest.getEmail());
+
+            if(user == null){
+                return new ResponseEntity<>(new ApiResponse("User not found.",false),HttpStatus.NOT_FOUND);
+            }
+
+            if(user.getConfirmationCode().equals(confirmationRequest.getConfirmationCode())){
+                userService.activateUser(user);
+                return new ResponseEntity<>(new ApiResponse("User verified successfully.",true),HttpStatus.OK);
+            }else{
+                return new ResponseEntity<>(new ApiResponse("Incorrect confirmation code",false),HttpStatus.BAD_REQUEST);
+            }
+        }catch (Exception e){
+            log.error("Exception during confirmation verification", e);
+            return new ResponseEntity<>(new ApiResponse("An error occurred during verification.",false),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

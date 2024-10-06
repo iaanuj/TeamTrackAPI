@@ -4,6 +4,17 @@ spring:
       uri: ${MONGODB_URI}
       database: teamtrackdb
       auto-index-creation: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+              enable: true
 
 
 jwt:
