@@ -22,7 +22,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "${FRONTEND_URL}")
+@CrossOrigin(origins = {"${FRONTEND_URL}", "${DEVELOPER_URL}"})
 @Slf4j
 public class AuthController {
 
@@ -95,4 +95,9 @@ public class AuthController {
             return new ResponseEntity<>(new ApiResponse("An error occurred during verification.",false),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+//    @PostMapping("/resend-confirmation")
+//    public ResponseEntity<ApiResponse> resendConfirmationCode(@RequestBody ConfirmationRequest confirmationRequest){
+//
+//    }
 }
