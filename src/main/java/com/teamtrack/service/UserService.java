@@ -1,6 +1,7 @@
 package com.teamtrack.service;
 
 import com.teamtrack.entity.User;
+import com.teamtrack.exception.EmailSendException;
 import com.teamtrack.exception.UsermailAlreadyExistsException;
 import com.teamtrack.exception.UsernameAlreadyExistsException;
 import com.teamtrack.repository.UserRepository;
@@ -31,7 +32,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void registerUser(User user) throws UsermailAlreadyExistsException, UsernameAlreadyExistsException {
+    public void registerUser(User user) throws UsermailAlreadyExistsException, UsernameAlreadyExistsException, EmailSendException {
         Optional<User> existingUsermail = Optional.ofNullable(userRepository.findByUserMail(user.getUserMail()));
         if(existingUsermail.isPresent()){
             throw new UsermailAlreadyExistsException("User mail already exist");

@@ -95,9 +95,4 @@ public class AuthController {
             return new ResponseEntity<>(new ApiResponse("An error occurred during verification.",false),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-//    @PostMapping("/resend-confirmation")
-//    public ResponseEntity<ApiResponse> resendConfirmationCode(@RequestBody ConfirmationRequest confirmationRequest){
-//
-//    }
 }
