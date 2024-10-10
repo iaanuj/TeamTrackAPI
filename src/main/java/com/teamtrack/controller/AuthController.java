@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -37,6 +38,9 @@ public class AuthController {
 
     @Autowired
     private JwtUtil jwtUtil;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/sign-up")
     public ResponseEntity<ApiResponse> signup(@Valid @RequestBody User user){
@@ -78,16 +82,14 @@ public class AuthController {
     @PostMapping("/verify-confirmation")
     public ResponseEntity<ApiResponse> verifyConfirmationCode(@RequestBody ConfirmationRequest confirmationRequest){
         try{
-            User user = userService.findByUserMail(confirmationRequest.getEmail());
-
+            User user = userService.findByUserMail(confirmationRequest.getUserMail());
             if(user == null){
                 return new ResponseEntity<>(new ApiResponse("User not found.",false),HttpStatus.NOT_FOUND);
             }
-
-            if(user.getConfirmationCode().equals(confirmationRequest.getConfirmationCode())){
+            if(passwordEncoder.matches(confirmationRequest.getUserOtp(), user.getUserOtp())){
                 userService.activateUser(user);
                 return new ResponseEntity<>(new ApiResponse("User verified successfully.",true),HttpStatus.OK);
-            }else{
+            } else{
                 return new ResponseEntity<>(new ApiResponse("Incorrect confirmation code",false),HttpStatus.BAD_REQUEST);
             }
         }catch (Exception e){

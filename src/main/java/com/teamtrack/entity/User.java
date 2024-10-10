@@ -12,7 +12,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Document(collection = "users")
@@ -37,7 +36,7 @@ public class User {
     @NotBlank
     private String userMail;
 
-    private String confirmationCode;
+    private String userOtp;
     private boolean active;
     private LocalDateTime registrationDate;
 

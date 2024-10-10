@@ -6,10 +6,8 @@ import com.teamtrack.exception.UsermailAlreadyExistsException;
 import com.teamtrack.exception.UsernameAlreadyExistsException;
 import com.teamtrack.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -26,7 +24,10 @@ public class UserService {
     @Autowired
     private EmailService emailService;
 
-    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+//    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public void saveUser(User user){
         userRepository.save(user);
@@ -43,11 +44,14 @@ public class UserService {
         }
         user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
         user.setRoles(Arrays.asList("USER"));
-        user.setConfirmationCode(generateConfirmationCode());
+
+        String plainOtp = generateConfirmationCode();
+        user.setUserOtp(passwordEncoder.encode(plainOtp));
+
         user.setActive(false);
         user.setRegistrationDate(LocalDateTime.now());
         userRepository.save(user);
-        emailService.sendConfirmationMail(user.getUserMail(), user.getConfirmationCode());
+        emailService.sendConfirmationMail(user.getUserMail(), plainOtp);
     }
 
     public String generateConfirmationCode(){
@@ -57,7 +61,7 @@ public class UserService {
 
     public void activateUser(User user){
         user.setActive(true);
-        user.setConfirmationCode(null);
+        user.setUserOtp(null);
         userRepository.save(user);
     }
 

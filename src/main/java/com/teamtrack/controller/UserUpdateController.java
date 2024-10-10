@@ -41,6 +41,6 @@ public class UserUpdateController {
         }
         userInDb.setUserName(userNameUpdateRequest.getNewUserName());
         userService.saveUser(userInDb);
-        return new ResponseEntity<>(new ApiResponse("username updated successfully"),HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse("username updated successfully",true),HttpStatus.OK);
     }
 }

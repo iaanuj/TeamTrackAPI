@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class ConfirmationRequest {
-    private String email;
-    private String confirmationCode;
+    private String userMail;
+    private String userOtp;
 }

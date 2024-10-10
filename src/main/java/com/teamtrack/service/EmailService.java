@@ -17,7 +17,7 @@ public class EmailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
-    public void sendConfirmationMail(String toEmail, String confirmationCode) throws EmailSendException {
+    public void sendConfirmationMail(String toEmail, String otp) throws EmailSendException {
         try{
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
@@ -38,7 +38,7 @@ public class EmailService {
                             + "</p>"
                             + "</div>"
                             + "</div>",
-                    confirmationCode
+                    otp
             );
 
             helper.setText(htmlContent, true);
