@@ -3,9 +3,12 @@ package com.teamtrack.service;
 import com.teamtrack.exception.EmailSendException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
 import javax.mail.internet.MimeMessage;
@@ -17,7 +20,11 @@ public class EmailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
-    public void sendConfirmationMail(String toEmail, String otp) throws EmailSendException {
+    @Retryable(value = {MailException.class, EmailSendException.class},
+            maxAttempts = 3,
+            backoff = @Backoff(delay = 2000, multiplier = 2)
+    )
+    public void sendConfirmationMail(String toEmail, String confirmationCode) throws EmailSendException {
         try{
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
@@ -38,7 +45,7 @@ public class EmailService {
                             + "</p>"
                             + "</div>"
                             + "</div>",
-                    otp
+                    confirmationCode
             );
 
             helper.setText(htmlContent, true);

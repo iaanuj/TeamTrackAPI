@@ -91,7 +91,6 @@ public class AuthController {
                 userService.activateUser(user);
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUserName(),null);
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-
                 String jwt = jwtUtil.generateToken(user.getUserName());
                 return new ResponseEntity<>(new ApiResponse("User verified and logged in successfully.",true, jwt),HttpStatus.OK);
             } else{
