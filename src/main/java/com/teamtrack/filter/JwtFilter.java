@@ -1,6 +1,8 @@
 package com.teamtrack.filter;
 
 import com.teamtrack.utils.JwtUtil;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,17 +30,31 @@ public class JwtFilter  extends OncePerRequestFilter {
         String authorizationHeader = request.getHeader("Authorization");
         String username = null;
         String jwt = null;
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            jwt = authorizationHeader.substring(7);
-            username = jwtUtil.extractUsername(jwt);
-        }
-        if (username != null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            if (jwtUtil.validateToken(jwt)) {
-                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(auth);
+        try{
+            if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+                jwt = authorizationHeader.substring(7);
+                username = jwtUtil.extractUsername(jwt);
             }
+            if (username != null) {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                if (jwtUtil.validateToken(jwt)) {
+                    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(auth);
+                }
+            }
+        }catch (ExpiredJwtException e) {
+            logger.error("JWT Token has expired");
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "JWT Token has expired");
+            return;
+        } catch (MalformedJwtException e) {
+            logger.error("JWT Token is malformed");
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT Token");
+            return;
+        } catch (Exception e) {
+            logger.error("An error occurred while processing the JWT token", e);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+            return;
         }
         chain.doFilter(request, response);
     }
