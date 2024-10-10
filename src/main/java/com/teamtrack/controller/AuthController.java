@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -88,7 +89,11 @@ public class AuthController {
             }
             if(passwordEncoder.matches(confirmationRequest.getUserOtp(), user.getUserOtp())){
                 userService.activateUser(user);
-                return new ResponseEntity<>(new ApiResponse("User verified successfully.",true),HttpStatus.OK);
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUserName(),null);
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+                String jwt = jwtUtil.generateToken(user.getUserName());
+                return new ResponseEntity<>(new ApiResponse("User verified and logged in successfully.",true, jwt),HttpStatus.OK);
             } else{
                 return new ResponseEntity<>(new ApiResponse("Incorrect confirmation code",false),HttpStatus.BAD_REQUEST);
             }
