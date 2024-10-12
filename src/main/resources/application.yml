@@ -2,8 +2,7 @@ spring:
   data:
     mongodb:
       uri: ${MONGODB_URI}
-      database: teamtrackdb
-      auto-index-creation: true
+      auto-index-creation: false
   mail:
     host: smtp.gmail.com
     port: 587
