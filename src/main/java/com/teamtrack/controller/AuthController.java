@@ -24,7 +24,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
-//@CrossOrigin(origins = {"${FRONTEND_URL}", "${DEVELOPER_URL}"})
+@CrossOrigin(origins = {"${FRONTEND_URL}", "${DEVELOPER_URL}"})
 @Slf4j
 public class AuthController {
 
