@@ -1,10 +1,12 @@
 package com.teamtrack.service;
 
+import com.teamtrack.entity.Group;
 import com.teamtrack.entity.User;
 import com.teamtrack.exception.EmailSendException;
 import com.teamtrack.exception.UsermailAlreadyExistsException;
 import com.teamtrack.exception.UsernameAlreadyExistsException;
 import com.teamtrack.repository.UserRepository;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -42,7 +44,10 @@ public class UserService {
             throw new UsernameAlreadyExistsException("User name already exist");
         }
         user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
-        user.setRoles(Arrays.asList("USER"));
+//        GroupRole groupRole = new GroupRole();%
+        //groupRole.setGroupId(null);
+//        groupRole.setRole("USER");%
+        //groupRole.setGroupId(new ObjectId());
 
         String plainOtp = generateConfirmationCode();
         user.setUserOtp(passwordEncoder.encode(plainOtp));

@@ -24,7 +24,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = {"${FRONTEND_URL}", "${DEVELOPER_URL}"})
+//@CrossOrigin(origins = {"${FRONTEND_URL}", "${DEVELOPER_URL}"})
 @Slf4j
 public class AuthController {
 
@@ -49,10 +49,7 @@ public class AuthController {
             userService.registerUser(user);
             return new ResponseEntity<>(new ApiResponse("User registered successfully. Please check your email for the confirmation code.",true),HttpStatus.CREATED);
         }
-        catch (UsermailAlreadyExistsException e){
-            return new ResponseEntity<>(new ApiResponse(e.getMessage(),false),HttpStatus.CONFLICT);
-        }
-        catch (UsernameAlreadyExistsException e){
+        catch (UsermailAlreadyExistsException | UsernameAlreadyExistsException e){
             return new ResponseEntity<>(new ApiResponse(e.getMessage(),false),HttpStatus.CONFLICT);
         }
         catch (Exception e) {

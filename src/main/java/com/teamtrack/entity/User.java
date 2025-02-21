@@ -2,7 +2,9 @@ package com.teamtrack.entity;
 
 
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -12,13 +14,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Document(collection = "users")
 @Data
 public class User {
     @Id
-    private ObjectId id;
+    private ObjectId userID;
 
     @Indexed(unique = true)
     @NonNull
@@ -39,6 +42,5 @@ public class User {
     private String userOtp;
     private boolean active;
     private LocalDateTime registrationDate;
-
     private List<String> roles;
 }
