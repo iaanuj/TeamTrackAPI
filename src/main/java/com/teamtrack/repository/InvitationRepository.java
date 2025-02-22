@@ -8,4 +8,5 @@ import java.util.Optional;
 
 public interface InvitationRepository extends MongoRepository<Invitation, ObjectId> {
     Optional<Invitation> findByGroupIdAndInvitedUserName(ObjectId groupId, String invitedUserName);
+    void deleteByGroupId(ObjectId groupId);
 }

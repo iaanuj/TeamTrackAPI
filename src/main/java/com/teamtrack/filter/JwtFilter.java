@@ -28,6 +28,15 @@ public class JwtFilter  extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
+
+        String requestURI = request.getRequestURI();
+
+        // Allow requests to public endpoints without checking for JWT
+        if (requestURI.startsWith("/auth/")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
         String authorizationHeader = request.getHeader("Authorization");
         String username = null;
         String jwt = null;
@@ -44,6 +53,7 @@ public class JwtFilter  extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(auth);
                 }
             }
+
         }catch (ExpiredJwtException e) {
             logger.error("JWT Token has expired");
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "JWT Token has expired");
@@ -54,7 +64,12 @@ public class JwtFilter  extends OncePerRequestFilter {
             return;
         } catch (Exception e) {
             logger.error("An error occurred while processing the JWT token", e);
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access is Denied");
+            return;
+        }
+
+        if(jwt == null) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "JWT Token is missing");
             return;
         }
         chain.doFilter(request, response);

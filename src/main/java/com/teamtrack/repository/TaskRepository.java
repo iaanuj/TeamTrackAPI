@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface TaskRepository extends MongoRepository<Task, ObjectId> {
     List<Task> findByGroupId(ObjectId groupId);
+    void deleteByGroupId(ObjectId groupId);
 }

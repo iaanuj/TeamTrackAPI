@@ -6,6 +6,8 @@ import com.teamtrack.dto.GroupDTO;
 import com.teamtrack.entity.Group;
 import com.teamtrack.entity.Member;
 import com.teamtrack.entity.User;
+import com.teamtrack.repository.InvitationRepository;
+import com.teamtrack.repository.TaskRepository;
 import com.teamtrack.repository.UserRepository;
 import com.teamtrack.repository.GroupRepository;
 import org.bson.types.ObjectId;
@@ -15,10 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class GroupService {
@@ -28,6 +27,12 @@ public class GroupService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private TaskRepository taskRepository;
+
+    @Autowired
+    private InvitationRepository invitationRepository;
 
     public void createGroup(GroupDTO groupDTO, String creatorUserName){
         Group group = new Group();
@@ -44,5 +49,20 @@ public class GroupService {
         group.setGroupMembers(Collections.singletonList(member));
 
         groupRepository.save(group);
+    }
+
+    public void deleteGroup(ObjectId groupId) {
+        // Fetch the group
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new NoSuchElementException("Group not found"));
+
+        // Delete all tasks associated with the group
+        taskRepository.deleteByGroupId(groupId);
+
+        // Delete all invitations associated with the group
+        invitationRepository.deleteByGroupId(groupId);
+
+        // Delete the group
+        groupRepository.delete(group);
     }
 }

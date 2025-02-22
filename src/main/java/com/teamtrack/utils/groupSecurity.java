@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.NoSuchElementException;
 
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 @Component("groupSecurity")
 public class groupSecurity {
 
