@@ -63,28 +63,29 @@ Run the main `TeamTrack.java` file to start the project.
 
 ## Endpoints
 
-| Method | Endpoint                           | Description                                                |
-|--------|------------------------------------|------------------------------------------------------------|
-| POST   | `auth/sign-in`                     | Create a new user and send confirmation code.              |
-| POST   | `auth/log-in`                      | Log in via JWT.                                            |
-| POST   | `auth/verify-confirmation`         | Verify user confirmation.                                  |
-| GET    | `health-check`                     | Check if the app is working.                               |
-| PUT    | `user/update-username`             | Update the user's username.                                |
-| GET    | `admin/all-users`                  | Retrieve all users (admin only).                           |
-| POST   | `group/create`                     | Create a new group.                                        |
-| POST   | `invitation/send`                  | Send an invitation to join the group (admin only).        |
-| PUT    | `invitation/{invitationId}/accept` | Accept an invitation to join the group.                   |
-| PUT    | `invitation/{invitationId}/reject` | Reject an invitation to join the group.                   |
-| POST   | `task/assign`                      | Assign a task to a specific user (admin only).            |
-| PUT    | `task/{taskId}/accept`             | Accept an assigned task.                                   |
-| PUT    | `task/{taskId}/reject`             | Reject an assigned task.                                   |
-| PUT    | `task/{taskId}/start`              | Start working on an assigned task.                        |
-| PUT    | `task/{taskId}/complete`           | Mark a task as completed.                                  |
+| Method | Endpoint                          | Description                                              |
+|--------|-----------------------------------|----------------------------------------------------------|
+| POST   | `auth/sign-in`                    | Create a new user and send confirmation code.            |
+| POST   | `auth/log-in`                     | Log in via JWT.                                          |
+| POST   | `auth/verify-confirmation`        | Verify user confirmation.                                |
+| GET    | `health-check`                    | Check if the app is working.                             |
+| PUT    | `user/update-username`            | Update the user's username.                              |
+| GET    | `admin/all-users`                 | Retrieve all users (admin only).                         |
+| POST   | `group/create`                    | Create a new group.                                      |
+| DELETE | `group/{groupId}/delete`          | Deletes an existing group.(group admin only)             |
+| POST   | `invitation/send`                 | Send an invitation to join the group (group admin only). |
+| PUT    | `invitation/{invitationId}/accept` | Accept an invitation to join the group.                  |
+| PUT    | `invitation/{invitationId}/reject` | Reject an invitation to join the group.                  |
+| POST   | `task/assign`                     | Assign a task to a specific user (group admin only).     |
+| PUT    | `task/{taskId}/accept`            | Accept an assigned task.                                 |
+| PUT    | `task/{taskId}/reject`            | Reject an assigned task.                                 |
+| PUT    | `task/{taskId}/start`             | Start working on an assigned task.                       |
+| PUT    | `task/{taskId}/complete`          | Mark a task as completed.                                |
 
 ## Group
 
 ### Create a Group
-- **Endpoint:** `POST /group`
+- **Endpoint:** `POST /group/create`
 - **Request Body:**
   ```json
   {
@@ -92,6 +93,9 @@ Run the main `TeamTrack.java` file to start the project.
     "groupDescription": "description"
   }
   ```
+
+### Delete a Group
+- **Endpoint:** `POST /group/{groupId}/delete`
 
 ## Group Invitation
 
