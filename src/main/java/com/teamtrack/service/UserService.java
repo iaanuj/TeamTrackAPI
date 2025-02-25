@@ -34,29 +34,30 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void registerUser(User user) throws UsermailAlreadyExistsException, UsernameAlreadyExistsException, EmailSendException {
-        Optional<User> existingUsermail = Optional.ofNullable(userRepository.findByUserMail(user.getUserMail()));
-        if(existingUsermail.isPresent()){
-            throw new UsermailAlreadyExistsException("User mail already exist");
-        }
-        Optional<User> existingUsername = Optional.ofNullable(userRepository.findByUserName(user.getUserName()));
-        if(existingUsername.isPresent()){
-            throw new UsernameAlreadyExistsException("User name already exist");
-        }
-        user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
-//        GroupRole groupRole = new GroupRole();%
-        //groupRole.setGroupId(null);
-//        groupRole.setRole("USER");%
-        //groupRole.setGroupId(new ObjectId());
+        public void registerUser(User user) throws UsermailAlreadyExistsException, UsernameAlreadyExistsException, EmailSendException {
+            Optional<User> existingUsermail = Optional.ofNullable(userRepository.findByUserMail(user.getUserMail()));
+            if(existingUsermail.isPresent()){
+                throw new UsermailAlreadyExistsException("User mail already exist");
+            }
+            Optional<User> existingUsername = Optional.ofNullable(userRepository.findByUserName(user.getUserName()));
 
-        String plainOtp = generateConfirmationCode();
-        user.setUserOtp(passwordEncoder.encode(plainOtp));
+            //delete if existing username is not verified
+            if(existingUsername.isPresent()){
+                if(!existingUsername.get().isActive()){
+                    userRepository.delete(existingUsername.get());
+                }else {
+                    throw new UsernameAlreadyExistsException("User name already exist");
+                }
+            }
+            user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
+            String plainOtp = generateConfirmationCode();
+            user.setUserOtp(passwordEncoder.encode(plainOtp));
 
-        user.setActive(false);
-        user.setRegistrationDate(LocalDateTime.now());
-        userRepository.save(user);
-        emailService.sendConfirmationMail(user.getUserMail(), plainOtp);
-    }
+            user.setActive(false);
+            user.setRegistrationDate(LocalDateTime.now());
+            userRepository.save(user);
+            emailService.sendConfirmationMail(user.getUserMail(), plainOtp);
+        }
 
     public String generateConfirmationCode(){
         Random random = new Random();
