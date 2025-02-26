@@ -34,4 +34,11 @@ public class GroupController {
         groupService.deleteGroup(groupId);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{groupId}/make-admin")
+    @PreAuthorize("@groupSecurity.isGroupAdmin(#groupId, authentication.principal.username)")
+    public ResponseEntity<Void> makeAdmin(@PathVariable ObjectId groupId, @RequestParam String userName){
+         groupService.makeAdmin(groupId, userName);
+         return ResponseEntity.ok().build();
+    }
 }

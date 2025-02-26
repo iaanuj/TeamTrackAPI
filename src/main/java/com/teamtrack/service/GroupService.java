@@ -65,4 +65,36 @@ public class GroupService {
         // Delete the group
         groupRepository.delete(group);
     }
+
+    public void makeAdmin(ObjectId groupId, String userName){
+        //fetch group
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(()-> new NoSuchElementException("Group not found"));
+
+        //fetch user
+        User user = userRepository.findByUserName(userName);
+        if(user == null){
+            throw new IllegalStateException("User not found");
+        }
+
+        // Check if the user is a member of the group
+        Member member = group.getGroupMembers().stream()
+                .filter(m -> m.getUserName().equals(userName))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("User is not a member of the group"));
+
+
+        //check if user is already admin
+        if(group.getGroupAdmins().contains(userName)){
+            throw new IllegalStateException("user is already an admin");
+        }
+
+        //add user to admin list
+        group.getGroupAdmins().add(userName);
+
+        //update groupMember list
+        member.setGroupRole("ADMIN");
+
+        groupRepository.save(group);
+    }
 }
