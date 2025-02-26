@@ -97,4 +97,8 @@ public class GroupService {
 
         groupRepository.save(group);
     }
+
+    public List<Group> getGroupsForUser(String userName){
+        return groupRepository.findByGroupMembersUserName(userName);
+    }
 }

@@ -13,6 +13,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import com.teamtrack.service.GroupService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/group")
 public class GroupController {
@@ -40,5 +42,13 @@ public class GroupController {
     public ResponseEntity<Void> makeAdmin(@PathVariable ObjectId groupId, @RequestParam String userName){
          groupService.makeAdmin(groupId, userName);
          return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/all-groups")
+    public List<Group> getAllGroups(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+
+        return groupService.getGroupsForUser(userName);
     }
 }
