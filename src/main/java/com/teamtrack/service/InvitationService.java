@@ -34,6 +34,9 @@ public class InvitationService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private NotificationService notificationService;
+
     // Send an invitation
     @PreAuthorize("@groupSecurity.isGroupAdmin(#groupId, authentication.name)")
     public Invitation sendInvitation(ObjectId groupId, String invitedUserName, String inviterUserName){
@@ -58,6 +61,8 @@ public class InvitationService {
         invitation.setStatus(InvitationStatus.PENDING);
         invitation.setCreatedAt(LocalDateTime.now());
         invitationRepository.save(invitation);
+
+        notificationService.sendInvitationNotification(invitedUserName, "You have a new group notification from " + inviterUserName);
 
         return invitation;
     }
