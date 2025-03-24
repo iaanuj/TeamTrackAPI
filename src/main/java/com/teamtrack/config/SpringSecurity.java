@@ -32,6 +32,7 @@ public class SpringSecurity extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception{
         http
                 .authorizeRequests()
+                .antMatchers("/ws/**").permitAll()
                 .antMatchers("/user/**").authenticated()
                 .antMatchers("/group/**").authenticated()
                 .antMatchers("/task/**").authenticated()

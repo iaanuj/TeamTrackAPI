@@ -32,11 +32,10 @@ public class JwtFilter  extends OncePerRequestFilter {
         String requestURI = request.getRequestURI();
 
         // Allow requests to public endpoints without checking for JWT
-        if (requestURI.startsWith("/auth/")) {
+        if (requestURI.startsWith("/auth/") || requestURI.startsWith("/ws/")) {
             chain.doFilter(request, response);
             return;
         }
-
 
         String authorizationHeader = request.getHeader("Authorization");
         String username = null;

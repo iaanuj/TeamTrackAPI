@@ -62,7 +62,7 @@ public class InvitationService {
         invitation.setCreatedAt(LocalDateTime.now());
         invitationRepository.save(invitation);
 
-        notificationService.sendInvitationNotification(invitedUserName, "You have a new group notification from " + inviterUserName);
+        notificationService.sendNotification(invitation.getInvitedUserName(), "You have been invited to " + group.getGroupName());
 
         return invitation;
     }
